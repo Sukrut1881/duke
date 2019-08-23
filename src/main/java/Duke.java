@@ -16,14 +16,31 @@ public class Duke {
 
         System.out.println(initial);
 
+        String [] string_array = new String[100];
+
         Scanner input = new Scanner(System.in);
         String input1 = input.nextLine();
+        int counter = 0;
 
         while ( !(input1.equals("bye")))
         {
-            System.out.println("    ____________________________________________________________\n" +
-                        "\t" +input1 + "\n" +
-                    "    ____________________________________________________________");
+            if ( input1.equals("list"))
+            {
+                System.out.println("    ____________________________________________________________\n" );
+                for (int i = 0; i < counter; i++ )
+                {
+                    System.out.println("\t"+ i + "." + " " + string_array[i] + "\n");
+                }
+                System.out.println ("    ____________________________________________________________");
+            }
+            else
+            {
+                string_array[counter] = input1;
+                counter++;
+                System.out.println("    ____________________________________________________________\n" +
+                        "     added: "+ input1+ "\n" +
+                        "    ____________________________________________________________");
+            }
             input1 = input.nextLine();
         }
 
