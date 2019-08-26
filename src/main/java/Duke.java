@@ -1,3 +1,4 @@
+import java.nio.channels.ScatteringByteChannel;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
@@ -34,6 +35,8 @@ public class Duke {
 
         int counter = 0;
 
+        int flag1 = 1;
+
         while (!(input1.equals("bye")))
         {
             StringTokenizer st = new StringTokenizer(input1);
@@ -43,7 +46,6 @@ public class Duke {
                 token[j] = st.nextToken();
                 j++;
             }
-
             if (token[0].equals("list"))
             {
                 System.out.println(line);
@@ -86,8 +88,12 @@ public class Duke {
                         by = by.concat(token[i] + " ");
                     }
                 }
-
-                tasks[counter] =  new Deadline(description, by);
+                try {
+                    tasks[counter] = new Deadline(description, by);
+                }
+                catch(DukeException ex) {
+                System.err.print(ex);
+            }
                 System.out.println(line +
                         "\t  Got it. I've added this task: \n"+
                         "\t" + tasks[counter].toString()+ "\n" +
@@ -103,8 +109,12 @@ public class Duke {
                 {
                         description = description.concat(token[i] + " ");
                 }
-
-                tasks[counter] =  new Todo(description);
+                try {
+                    tasks[counter] = new Todo(description);
+                }
+                catch(DukeException ex) {
+                    System.err.print(ex);
+                }
                 System.out.println(line +
                         "\t  Got it. I've added this task: \n"+
                         "\t" + tasks[counter].toString()+ "\n" +
@@ -129,12 +139,24 @@ public class Duke {
                     }
                 }
 
-                tasks[counter] = new Event(description, at);
+                try {
+                    tasks[counter] = new Event(description, at);
+                } catch (DukeException ex) {
+                    System.err.print(ex);
+                }
                 System.out.println(line +
                         "\t  Got it. I've added this task: \n" +
                         "\t" + tasks[counter].toString() + "\n" +
                         " \t Now you have " + ++counter + " tasks in the list \n" +
                         line);
+            }
+            else
+            {
+                DukeException d = new DukeException("     ☹ OOPS!!! I'm sorry, but I don't know what that means :-(");
+                System.out.println("    ____________________________________________________________\n" +
+                        d.getMessage() + "\n" +
+                        "    ____________________________________________________________");
+
             }
             input1 = input.nextLine();
         }
