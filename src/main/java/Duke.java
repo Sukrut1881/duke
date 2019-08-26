@@ -1,4 +1,6 @@
 import java.util.Scanner;
+import java.util.StringTokenizer;
+
 public class Duke {
     public static boolean isInteger(String str) {
         try {
@@ -16,58 +18,130 @@ public class Duke {
                 + "|____/ \\__,_|_|\\_\\___|\n";
         System.out.println("Hello from\n" + logo);
 
-        String initial = "    ____________________________________________________________\n" +
+        String line = "    ____________________________________________________________\n";
+
+        String initial = line +
                 "     Hello! I'm Duke\n" +
                 "     What can I do for you?\n" +
-                "    ____________________________________________________________";
-
+                line;
 
         System.out.println(initial);
 
-        Task [] string_array = new Task[100];
+        Task [] tasks = new Task[100];
 
         Scanner input = new Scanner(System.in);
         String input1 = input.nextLine();
+
         int counter = 0;
 
         while (!(input1.equals("bye")))
         {
-            if ( input1.equals("list"))
+            StringTokenizer st = new StringTokenizer(input1);
+            int j = 0;
+            String [] token = new String [100];
+            while (st.hasMoreTokens()) {
+                token[j] = st.nextToken();
+                j++;
+            }
+
+            if (token[0].equals("list"))
             {
-                System.out.println("    ____________________________________________________________\n" );
+                System.out.println(line);
+                System.out.println("Here are the tasks in your list: \n");
                 for (int i = 0; i < counter; i++ )
                 {
                     int s = i+1;
-                    System.out.println("\t"+ s + "." + " [" + string_array[i].getStatusIcon()+ "] "+ string_array[i].description + "\n");
+                    System.out.println("\t"+ s + ".  " + tasks[i].toString() + "\n");
                 }
-                System.out.println ("    ____________________________________________________________");
+                System.out.println (line);
             }
-            else if (input1.contains("done ") && isInteger(String.valueOf(input1.charAt(5))))
+            else if (token[0].equals("done"))
             {
-                int location = input1.charAt(5)-'0'-1;
-//                System.out.println(location);
-                string_array[location].markAsDone();
-                System.out.println("    ____________________________________________________________\n" +
+                int location = token[1].charAt(0)-'0'-1;
+                tasks[location].markAsDone();
+                System.out.println(line +
                         "     Nice! I've marked this task as done: \n" +
-                        "       [" + string_array[location].getStatusIcon()+ "]" + string_array[location].description +  "\n" +
-                        "    ____________________________________________________________");
+                        "\t" + tasks[location].toString() +  "\n" +
+                        line);
             }
-            else
+            else if (token[0].equals("deadline"))
             {
-                Task t = new Task(input1);
-                string_array[counter]= t;
-                System.out.println("    ____________________________________________________________\n" +
-                        "     added: "+ " [" + string_array[counter].getStatusIcon()+ "] " +string_array[counter].description+ "\n" +
-                        "    ____________________________________________________________");
-                counter++;
+                String description = "";
+                String by = "";
+                boolean flag = true;
+
+                for ( int i = 1; i< j ; i++)
+                {
+                    if(token[i].equals("/by"))
+                    {
+                        flag = false;
+                        continue;
+                    }
+                    if(flag)
+                    {
+                        description = description.concat(token[i] + " ");
+                    }
+                    else
+                    {
+                        by = by.concat(token[i] + " ");
+                    }
+                }
+
+                tasks[counter] =  new Deadline(description, by);
+                System.out.println(line +
+                        "\t  Got it. I've added this task: \n"+
+                        "\t" + tasks[counter].toString()+ "\n" +
+                        " \t Now you have "+ ++counter + " tasks in the list \n" +
+                        line);
+            }
+            else if (token[0].equals("todo"))
+            {
+                String description = "";
+                boolean flag = true;
+
+                for ( int i = 1; i< j ; i++)
+                {
+                        description = description.concat(token[i] + " ");
+                }
+
+                tasks[counter] =  new Todo(description);
+                System.out.println(line +
+                        "\t  Got it. I've added this task: \n"+
+                        "\t" + tasks[counter].toString()+ "\n" +
+                        " \t Now you have "+ ++counter + " tasks in the list \n" +
+                        line);
+            }
+            else if (token[0].equals("event"))
+            {
+                String description = "";
+                String at = "";
+                boolean flag = true;
+
+                for (int i = 1; i < j; i++) {
+                    if (token[i].equals("/at")) {
+                        flag = false;
+                        continue;
+                    }
+                    if (flag) {
+                        description = description.concat(token[i] + " ");
+                    } else {
+                        at = at.concat(token[i] + " ");
+                    }
+                }
+
+                tasks[counter] = new Event(description, at);
+                System.out.println(line +
+                        "\t  Got it. I've added this task: \n" +
+                        "\t" + tasks[counter].toString() + "\n" +
+                        " \t Now you have " + ++counter + " tasks in the list \n" +
+                        line);
             }
             input1 = input.nextLine();
         }
 
-        String exit = "    ____________________________________________________________\n" +
+        String exit = line +
             "     Bye. Hope to see you again soon!\n" +
-            "    ____________________________________________________________";
-
+            line;
         System.out.println(exit);
     }
 }
