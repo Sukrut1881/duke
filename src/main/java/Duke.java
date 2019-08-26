@@ -41,8 +41,8 @@ public class Duke {
 
         //Reading in the input from a previous session
 
-        FileReader fr = new FileReader("src/data/duke.txt");
-        BufferedReader br = new BufferedReader(fr);
+        FileReader fileReader = new FileReader("src/data/duke.txt");
+        BufferedReader br = new BufferedReader(fileReader);
         String str;
         while((str = br.readLine()) != null){
             String delims = "[|]";
@@ -84,8 +84,8 @@ public class Duke {
         {
             //Looping the input
 
-            FileWriter fw = new FileWriter("src/data/duke.txt", true);
-            PrintWriter pw = new PrintWriter(fw);
+            FileWriter fileWriter = new FileWriter("src/data/duke.txt", true);
+            PrintWriter printWriter = new PrintWriter(fileWriter);
 
             // Tokenize the input string
 
@@ -150,7 +150,7 @@ public class Duke {
 
                     // Writing to the file
 
-                    pw.println("D|" + tasks[counter].isDone + "|"+ tasks[counter].description+"|"+by);
+                    printWriter.println("D|" + tasks[counter].isDone + "|"+ tasks[counter].description+"|"+by);
 
                 }
                 catch(DukeException ex) {
@@ -178,7 +178,7 @@ public class Duke {
                 try {
                     tasks[counter] = new Todo(description);
                     // Writing to the file
-                    pw.println("T|" + tasks[counter].isDone + "|"+ tasks[counter].description);
+                    printWriter.println("T|" + tasks[counter].isDone + "|"+ tasks[counter].description);
                 }
                 //Exception for Level-5
                 catch(DukeException ex) {
@@ -212,7 +212,7 @@ public class Duke {
                     //New Event
                     tasks[counter] = new Event(description, at);
                     // Writing to the file
-                    pw.println("E|" + tasks[counter].isDone + "|"+ tasks[counter].description+"|"+at);
+                    printWriter.println("E|" + tasks[counter].isDone + "|"+ tasks[counter].description+"|"+at);
                 }
                 //Exception for Level-5
                 catch (DukeException ex) {
@@ -237,19 +237,19 @@ public class Duke {
 
             // Take in the next line of input
 
-            pw.close();
-            fw.close();
+            printWriter.close();
+            fileWriter.close();
             input1 = input.nextLine();
         }
 
         // Update the .txt file at the end of the session
 
-        FileReader fr1 = new FileReader("src/data/duke.txt");
-        BufferedReader br1 = new BufferedReader(fr1);
+        FileReader fileReader1 = new FileReader("src/data/duke.txt");
+        BufferedReader bufferedReader1 = new BufferedReader(fileReader1);
         StringBuilder inputBuffer = new StringBuilder();
         String str1;
         int counter1 = 0;
-        while((str1 = br1.readLine()) != null) {
+        while((str1 = bufferedReader1.readLine()) != null) {
             String delims = "[|]";
             String[] tokens1 = str1.split(delims);
             if (tasks[counter1].isDone) {
@@ -266,7 +266,7 @@ public class Duke {
             inputBuffer.append('\n');
             counter1++;
         }
-        fr1.close();
+        fileReader1.close();
 
         FileOutputStream fileOut = new FileOutputStream("src/data/duke.txt");
         fileOut.write(inputBuffer.toString().getBytes());
