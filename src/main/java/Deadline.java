@@ -12,6 +12,12 @@ public class Deadline extends Task {
                     "     ☹ OOPS!!! The description of a deadline cannot be empty.\n" +
                     "    ____________________________________________________________\n");
         }
+        else if (by.equals(""))
+        {
+            throw new DukeException("\n    ____________________________________________________________\n" +
+                    "     ☹ OOPS!!! The time by of a deadline cannot be empty.\n" +
+                    "    ____________________________________________________________\n");
+        }
     }
 
     @Override

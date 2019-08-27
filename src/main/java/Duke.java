@@ -1,5 +1,8 @@
 import java.io.*;
 import java.nio.channels.ScatteringByteChannel;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 import java.util.*;
@@ -13,7 +16,7 @@ public class Duke {
             return false;
         }
     }
-    public static void main(String[] args) throws IOException, DukeException {
+    public static void main(String[] args) throws IOException, DukeException, ParseException {
 
         //Intro page to DUKE:
 
@@ -38,6 +41,11 @@ public class Duke {
         Task [] tasks = new Task[100];
 
         int counter = 0;
+
+        SimpleDateFormat formatter_st = new SimpleDateFormat("dd 'st' 'of' MMMMMMMMMMMM yyyy, h:mm a");
+        SimpleDateFormat formatter_nd = new SimpleDateFormat("dd 'nd' 'of' MMMMMMMMMMMM yyyy, h:mm a");
+        SimpleDateFormat formatter_rd = new SimpleDateFormat("dd 'rd' 'of' MMMMMMMMMMMM yyyy, h:mm a");
+        SimpleDateFormat formatter_th = new SimpleDateFormat("dd 'th' 'of' MMMMMMMMMMMM yyyy, h:mm a");
 
         //Reading in the input from a previous session
 
@@ -145,6 +153,48 @@ public class Duke {
                         by = by.concat(token[i] + " ");
                     }
                 }
+                // changing the by if it is a date
+
+                if(by.contains("/") && Character.isDigit(by.charAt(0)))
+                {
+                    SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HHmm");
+                    Date date = formatter.parse(by);
+
+                    String output ="";
+                    if(by.charAt(1) == '1' || (by.charAt(0) == '1' && by.charAt(1) =='/'))
+                    {
+                        if(by.charAt(0) == '1' && by.charAt(1) == '1') {
+                            output = formatter_th.format(date);
+                        }
+                        else
+                        {
+                            output = formatter_st.format(date);
+                        }
+                    }
+                    else if (by.charAt(1) == '2' || (by.charAt(0) == '2' && by.charAt(1) =='/'))
+                    {
+                        if(by.charAt(0)== '1' && by.charAt(1) == '2') {
+                            output = formatter_th.format(date);
+                        }
+                        else
+                        {
+                            output = formatter_nd.format(date);
+                        }
+                    }
+                    else if (by.charAt(1) == '3' || (by.charAt(0) == '3' && by.charAt(1) =='/')) {
+                        if (by.charAt(0) == '1' && by.charAt(1) == '3') {
+                            output = formatter_th.format(date);
+                        } else {
+                            output = formatter_rd.format(date);
+                        }
+                    }
+                    else
+                    {
+                        output = formatter_th.format(date);
+                    }
+                    by = output;
+                }
+
                 try {
                     tasks[counter] = new Deadline(description, by);
 
@@ -207,6 +257,46 @@ public class Duke {
                         at = at.concat(token[i] + " ");
                     }
                 }
+                if(at.contains("/") && Character.isDigit(at.charAt(0)))
+                {
+                    SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HHmm");
+                    Date date = formatter.parse(at);
+
+                    String output ="";
+                    if(at.charAt(1) == '1' || (at.charAt(0) == '1' && at.charAt(1) =='/'))
+                    {
+                        if(at.charAt(0) == '1' && at.charAt(1) == '1') {
+                            output = formatter_th.format(date);
+                        }
+                        else
+                        {
+                            output = formatter_st.format(date);
+                        }
+                    }
+                    else if (at.charAt(1) == '2' || (at.charAt(0) == '2' && at.charAt(1) =='/'))
+                    {
+                        if(at.charAt(0)== '1' && at.charAt(1) == '2') {
+                            output = formatter_th.format(date);
+                        }
+                        else
+                        {
+                            output = formatter_nd.format(date);
+                        }
+                    }
+                    else if (at.charAt(1) == '3' || (at.charAt(0) == '3' && at.charAt(1) =='/')) {
+                        if (at.charAt(0) == '1' && at.charAt(1) == '3') {
+                            output = formatter_th.format(date);
+                        } else {
+                            output = formatter_rd.format(date);
+                        }
+                    }
+                    else
+                    {
+                        output = formatter_th.format(date);
+                    }
+                    at = output;
+                }
+
 
                 try {
                     //New Event

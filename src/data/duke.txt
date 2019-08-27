@@ -1,3 +1,1 @@
-T|false|Homework for Tomorrow
-D|true|Poster Making |Tonight 7 pm 
-E|false|Club Meeting |U-Town 
+

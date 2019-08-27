@@ -13,6 +13,12 @@ public class Event extends Task
                     "     ☹ OOPS!!! The description of an event cannot be empty.\n" +
                     "    ____________________________________________________________\n");
         }
+        else if (at.equals(""))
+        {
+            throw new DukeException("\n    ____________________________________________________________\n" +
+                    "     ☹ OOPS!!! The time at of an event cannot be empty.\n" +
+                    "    ____________________________________________________________\n");
+        }
     }
 
     @Override
