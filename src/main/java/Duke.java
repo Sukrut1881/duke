@@ -339,7 +339,7 @@ public class Duke {
         StringBuilder inputBuffer = new StringBuilder();
         String str1;
         int counter1 = 0;
-        while((str1 = bufferedReader1.readLine()) != null) {
+        while((str1 = bufferedReader1.readLine()) != null && counter != 0) {
             String delims = "[|]";
             String[] tokens1 = str1.split(delims);
             if (tasks[counter1].isDone) {
