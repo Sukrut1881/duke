@@ -140,7 +140,7 @@ public class Duke {
                     description = description.concat(token[i] + " ");
                 }
                 try {
-                    tasks.add( new Todo(description));
+                    tasks.add(new Todo(description));
                     // Writing to the file
                     printWriter.println("T|" + tasks.get(counter).isDone + "|" + tasks.get(counter).description);
                 }
@@ -173,7 +173,8 @@ public class Duke {
                 at=detectDate(at);
                 try {
                     //New Event
-                    tasks.add( new Event(description, at));
+
+                    tasks.add(new Event(description, at));
                     // Writing to the file
                     printWriter.println("E|" + tasks.get(counter).isDone + "|" + tasks.get(counter).description + "|" + at);
                 }
@@ -186,7 +187,22 @@ public class Duke {
                         "\t" + tasks.get(counter).toString() + "\n" +
                         " \t Now you have " + ++counter + " tasks in the list \n" +
                         line);
-            } else {
+            }
+            else if(token[0].equals("find"))
+            {
+                System.out.println(line + " Here are the matching tasks in your list: \n");
+                int matches = 0;
+                token[1] = token[1]+ " ";
+                for (int i = 0; i < tasks.size(); i++) {
+                    if(tasks.get(i).description.contains(token[1]))
+                    {
+                        System.out.println("\t"+ matches+"."+ tasks.get(i).toString());
+                        matches++;
+                    }
+                }
+                System.out.println(line);
+            }
+            else {
                 // Error Type 2 in Level-5
                 DukeException d = new DukeException("     ☹ OOPS!!! I'm sorry, but I don't know what that means :-(");
                 dukePrint(d.getMessage());
@@ -356,7 +372,8 @@ public class Duke {
                 String[] tokens = str.split(delims);
 
                 if (tokens[0].equals("T")) {
-                    tasks.add(new Todo(tokens[2])) ;
+
+                    tasks.add(new Todo(tokens[2]));
                     if (tokens[1].equals("true")) {
                         tasks.get(counter).isDone = true;
                     }
@@ -368,7 +385,8 @@ public class Duke {
                     }
                     counter++;
                 } else if (tokens[0].equals("E")) {
-                    tasks.add( new Event(tokens[2], tokens[3]));
+
+                    tasks.add(new Event(tokens[2], tokens[3]));
                     if (tokens[1].equals("true")) {
                         tasks.get(counter).isDone = true;
                     }
