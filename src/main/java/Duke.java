@@ -14,7 +14,7 @@ public class Duke {
 
     //Making an array of objects
 
-    private static Task[] tasks = new Task[100];
+    private static ArrayList<Task> tasks = new ArrayList<>();
 
     private static  SimpleDateFormat formatter_st = new SimpleDateFormat("dd 'st' 'of' MMMMMMMMMMMM yyyy, h:mm a");
     private static  SimpleDateFormat formatter_nd = new SimpleDateFormat("dd 'nd' 'of' MMMMMMMMMMMM yyyy, h:mm a");
@@ -72,7 +72,7 @@ public class Duke {
                 System.out.println("Here are the tasks in your list: \n");
                 for (int i = 0; i < counter; i++) {
                     int s = i + 1;
-                    System.out.println("\t" + s + ".  " + tasks[i].toString() + "\n");
+                    System.out.println("\t" + s + ".  " + tasks.get(i).toString() + "\n");
                 }
                 System.out.println(line);
 
@@ -80,9 +80,9 @@ public class Duke {
                 //Marking a task as done
 
                 int location = token[1].charAt(0) - '0' - 1;
-                tasks[location].markAsDone();
+                tasks.get(location).markAsDone();
                 dukePrint("     Nice! I've marked this task as done: \n" +
-                        "\t" + tasks[location].toString() + "\n");
+                        "\t" + tasks.get(location).toString() + "\n");
 
             } else if (token[0].equals("deadline")) {
                 //Adding a Deadline
@@ -107,11 +107,11 @@ public class Duke {
                  by = detectDate(by);
 
                 try {
-                    tasks[counter] = new Deadline(description, by);
+                    tasks.add( new Deadline(description, by));
 
                     // Writing to the file
 
-                    printWriter.println("D|" + tasks[counter].isDone + "|" + tasks[counter].description + "|" + by);
+                    printWriter.println("D|" + tasks.get(counter).isDone + "|" + tasks.get(counter).description + "|" + by);
 
                 } catch (DukeException ex) {
                     //Exception for Level-5
@@ -122,7 +122,7 @@ public class Duke {
                 //Printing out the new Deadline
 
                 dukePrint("\t  Got it. I've added this task: \n" +
-                        "\t" + tasks[counter].toString() + "\n" +
+                        "\t" + tasks.get(counter).toString() + "\n" +
                         " \t Now you have " + ++counter + " tasks in the list \n");
 
             } else if (token[0].equals("todo")) {
@@ -132,16 +132,16 @@ public class Duke {
                     description = description.concat(token[i] + " ");
                 }
                 try {
-                    tasks[counter] = new Todo(description);
+                    tasks.add(new Todo(description));
                     // Writing to the file
-                    printWriter.println("T|" + tasks[counter].isDone + "|" + tasks[counter].description);
+                    printWriter.println("T|" + tasks.get(counter).isDone + "|" + tasks.get(counter).description);
                 }
                 //Exception for Level-5
                 catch (DukeException ex) {
                     System.err.print(ex);
                 }
                 dukePrint("\t  Got it. I've added this task: \n" +
-                        "\t" + tasks[counter].toString() + "\n" +
+                        "\t" + tasks.get(counter).toString() + "\n" +
                         " \t Now you have " + ++counter + " tasks in the list \n");
 
             }
@@ -165,9 +165,9 @@ public class Duke {
                 at=detectDate(at);
                 try {
                     //New Event
-                    tasks[counter] = new Event(description, at);
+                    tasks.add(new Event(description, at));
                     // Writing to the file
-                    printWriter.println("E|" + tasks[counter].isDone + "|" + tasks[counter].description + "|" + at);
+                    printWriter.println("E|" + tasks.get(counter).isDone + "|" + tasks.get(counter).description + "|" + at);
                 }
                 //Exception for Level-5
                 catch (DukeException ex) {
@@ -175,10 +175,25 @@ public class Duke {
                 }
                 System.out.println(line +
                         "\t  Got it. I've added this task: \n" +
-                        "\t" + tasks[counter].toString() + "\n" +
+                        "\t" + tasks.get(counter).toString() + "\n" +
                         " \t Now you have " + ++counter + " tasks in the list \n" +
                         line);
-            } else {
+            }
+            else if(token[0].equals("find"))
+            {
+                System.out.println(line + " Here are the matching tasks in your list: \n");
+                int matches = 0;
+                token[1] = token[1]+ " ";
+                for (int i = 0; i < tasks.size(); i++) {
+                    if(tasks.get(i).description.contains(token[1]))
+                    {
+                        System.out.println("\t"+ matches+"."+ tasks.get(i).toString());
+                        matches++;
+                    }
+                }
+                System.out.println(line);
+            }
+            else {
                 // Error Type 2 in Level-5
                 DukeException d = new DukeException("     ☹ OOPS!!! I'm sorry, but I don't know what that means :-(");
                 dukePrint(d.getMessage());
@@ -269,7 +284,7 @@ public class Duke {
             while ((str1 = bufferedReader1.readLine()) != null && counter != 0) {
                 String delims = "[|]";
                 String[] tokens1 = str1.split(delims);
-                if (tasks[counter1].isDone) {
+                if (tasks.get(counter1).isDone) {
                     tokens1[1] = "true";
                 }
                 StringBuilder line1 = new StringBuilder();
@@ -308,21 +323,21 @@ public class Duke {
                 String[] tokens = str.split(delims);
 
                 if (tokens[0].equals("T")) {
-                    tasks[counter] = new Todo(tokens[2]);
+                    tasks.add(new Todo(tokens[2]));
                     if (tokens[1].equals("true")) {
-                        tasks[counter].isDone = true;
+                        tasks.get(counter).isDone = true;
                     }
                     counter++;
                 } else if (tokens[0].equals("D")) {
-                    tasks[counter] = new Deadline(tokens[2], tokens[3]);
+                    tasks.add(new Deadline(tokens[2], tokens[3]));
                     if (tokens[1].equals("true")) {
-                        tasks[counter].isDone = true;
+                        tasks.get(counter).isDone = true;
                     }
                     counter++;
                 } else if (tokens[0].equals("E")) {
-                    tasks[counter] = new Event(tokens[2], tokens[3]);
+                    tasks.add(new Event(tokens[2], tokens[3]));
                     if (tokens[1].equals("true")) {
-                        tasks[counter].isDone = true;
+                        tasks.get(counter).isDone = true;
                     }
                     counter++;
                 }
