@@ -2,9 +2,11 @@ public class Deadline extends Task {
 
     protected String by;
 
-    public Deadline(String description, String by) throws DukeException {
+    public Deadline(String description, String by, String type) throws DukeException {
         super(description);
         this.by = by;
+        this.type = type;
+
 
         if (description.equals(""))
         {

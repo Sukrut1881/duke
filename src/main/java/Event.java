@@ -2,10 +2,11 @@ public class Event extends Task
 {
     protected String at;
 
-    public Event(String description, String at) throws DukeException
+    public Event(String description, String at, String type) throws DukeException
     {
         super(description);
         this.at = at;
+        this.type = type;
 
         if (description.equals(""))
         {

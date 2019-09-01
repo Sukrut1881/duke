@@ -50,9 +50,6 @@ public class Duke {
         while (!(input1.equals("bye"))) {
             //Looping the input
 
-            FileWriter fileWriter = new FileWriter("src/data/duke.txt", true);
-            PrintWriter printWriter = new PrintWriter(fileWriter);
-
             // Tokenize the input string
 
             StringTokenizer st = new StringTokenizer(input1);
@@ -115,12 +112,7 @@ public class Duke {
                  by = detectDate(by);
 
                 try {
-                    tasks.add(new Deadline(description, by));
-
-                    // Writing to the file
-
-                    printWriter.println("D|" + tasks.get(counter).isDone + "|" + tasks.get(counter).description + "|" + by);
-
+                    tasks.add(new Deadline(description, by, "D"));
                 } catch (DukeException ex) {
                     //Exception for Level-5
 
@@ -140,9 +132,7 @@ public class Duke {
                     description = description.concat(token[i] + " ");
                 }
                 try {
-                    tasks.add(new Todo(description));
-                    // Writing to the file
-                    printWriter.println("T|" + tasks.get(counter).isDone + "|" + tasks.get(counter).description);
+                    tasks.add(new Todo(description, "T"));
                 }
                 //Exception for Level-5
                 catch (DukeException ex) {
@@ -173,10 +163,7 @@ public class Duke {
                 at=detectDate(at);
                 try {
                     //New Event
-
-                    tasks.add(new Event(description, at));
-                    // Writing to the file
-                    printWriter.println("E|" + tasks.get(counter).isDone + "|" + tasks.get(counter).description + "|" + at);
+                    tasks.add(new Event(description, at, "E"));
                 }
                 //Exception for Level-5
                 catch (DukeException ex) {
@@ -210,8 +197,6 @@ public class Duke {
 
             // Take in the next line of input
 
-            printWriter.close();
-            fileWriter.close();
             input1 = inputString();
         }
 
@@ -289,7 +274,7 @@ public class Duke {
         // Update the .txt file when the thing is deleted
 
         try {
-            FileReader fileReader1 = new FileReader("src/data/duke.txt");
+            FileReader fileReader1 = new FileReader("C:\\Users\\thesu\\DukeCS2113\\duke\\src\\data\\duke.txt");
             BufferedReader bufferedReader1 = new BufferedReader(fileReader1);
             StringBuilder inputBuffer = new StringBuilder();
             String str1;
@@ -310,7 +295,7 @@ public class Duke {
             }
             fileReader1.close();
 
-            FileOutputStream fileOut = new FileOutputStream("src/data/duke.txt");
+            FileOutputStream fileOut = new FileOutputStream("C:\\Users\\thesu\\DukeCS2113\\duke\\src\\data\\duke.txt");
             fileOut.write(inputBuffer.toString().getBytes());
             fileOut.close();
         }
@@ -325,7 +310,18 @@ public class Duke {
         // Update the .txt file at the end of the session
 
         try {
-            FileReader fileReader1 = new FileReader("src/data/duke.txt");
+
+            FileWriter fileWriter = new FileWriter("C:\\Users\\thesu\\DukeCS2113\\duke\\src\\data\\duke.txt", true);
+            PrintWriter printWriter = new PrintWriter(fileWriter);
+
+            for (Task task : tasks) {
+                    printWriter.println(task.type+"|" + task.isDone + "|" + task.description + "|" + task.at);
+            }
+
+            printWriter.close();
+            fileWriter.close();
+
+            FileReader fileReader1 = new FileReader("C:\\Users\\thesu\\DukeCS2113\\duke\\src\\data\\duke.txt");
             BufferedReader bufferedReader1 = new BufferedReader(fileReader1);
             StringBuilder inputBuffer = new StringBuilder();
             String str1;
@@ -349,7 +345,7 @@ public class Duke {
             }
             fileReader1.close();
 
-            FileOutputStream fileOut = new FileOutputStream("src/data/duke.txt");
+            FileOutputStream fileOut = new FileOutputStream("C:\\Users\\thesu\\DukeCS2113\\duke\\src\\data\\duke.txt");
             fileOut.write(inputBuffer.toString().getBytes());
             fileOut.close();
         }
@@ -364,7 +360,7 @@ public class Duke {
         //Reading in the input from a previous session
         try
         {
-            FileReader fileReader = new FileReader("src/data/duke.txt");
+            FileReader fileReader = new FileReader("C:\\Users\\thesu\\DukeCS2113\\duke\\src\\data\\duke.txt");
             BufferedReader br = new BufferedReader(fileReader);
             String str;
             while ((str = br.readLine()) != null) {
@@ -373,20 +369,20 @@ public class Duke {
 
                 if (tokens[0].equals("T")) {
 
-                    tasks.add(new Todo(tokens[2]));
+                    tasks.add(new Todo(tokens[2], "T"));
                     if (tokens[1].equals("true")) {
                         tasks.get(counter).isDone = true;
                     }
                     counter++;
                 } else if (tokens[0].equals("D")) {
-                    tasks.add(new Deadline(tokens[2], tokens[3]));
+                    tasks.add(new Deadline(tokens[2], tokens[3], "D"));
                     if (tokens[1].equals("true")) {
                         tasks.get(counter).isDone = true;
                     }
                     counter++;
                 } else if (tokens[0].equals("E")) {
 
-                    tasks.add(new Event(tokens[2], tokens[3]));
+                    tasks.add(new Event(tokens[2], tokens[3], "E"));
                     if (tokens[1].equals("true")) {
                         tasks.get(counter).isDone = true;
                     }

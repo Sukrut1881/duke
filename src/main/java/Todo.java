@@ -1,7 +1,9 @@
 public class Todo extends Task {
 
-    public Todo(String description) throws DukeException{
+    public Todo(String description, String type) throws DukeException{
         super(description);
+        this.type = type;
+
         if (description.equals(""))
         {
             throw new DukeException("\n    ____________________________________________________________\n" +
