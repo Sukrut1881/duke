@@ -1,0 +1,159 @@
+import java.io.IOException;
+import java.text.ParseException;
+
+public class Ui {
+
+    public static String line = "    ____________________________________________________________\n";
+
+    public Ui(){
+        String logo = " ____        _        \n"
+                + "|  _ \\ _   _| | _____ \n"
+                + "| | | | | | | |/ / _ \\\n"
+                + "| |_| | |_| |   <  __/\n"
+                + "|____/ \\__,_|_|\\_\\___|\n";
+
+        Duke.dukePrint("Hello from\n" + logo);
+
+
+        Duke.dukePrint("     Hello! I'm Duke\n" +
+                "     What can I do for you?\n" );
+    }
+
+    void showLoadingError()
+    {
+        System.out.println("\n    ____________________________________________________________\n" +
+                "     ☹ OOPS!!! There was an error loading your list.\n" +
+                "    ____________________________________________________________\n");
+    }
+
+    void showList(TaskList tasks)
+    {
+        System.out.println(line);
+        System.out.println("Here are the tasks in your list: \n");
+        for (int i = 0; i < tasks.size; i++) {
+            int s = i + 1;
+            System.out.println("\t" + s + ".  " + tasks.task_list.get(i).toString() + "\n");
+        }
+        System.out.println(line);
+
+    }
+
+    void doneTask(TaskList tasks, String[] token)
+    {
+        int location = token[1].charAt(0) - '0' - 1;
+        tasks.task_list.get(location).markAsDone();
+        Duke.dukePrint("     Nice! I've marked this task as done: \n" +
+                "\t" + tasks.task_list.get(location).toString() + "\n");
+    }
+
+    void deleteTask(TaskList tasks, int location)
+    {
+        Duke.dukePrint("          Noted. I've removed this task:: \n" +
+                "\t" + tasks.task_list.get(location).toString() + "\n"
+                + " \t Now you have " + --tasks.size + " tasks in the list \n");
+        TaskList.deleteTask(tasks.task_list.get(location).description, tasks);
+        tasks.task_list.remove(location);
+    }
+
+    void newTodo (TaskList tasks, String[] token)
+    {
+
+        String description = "";
+
+        int size = 0;
+
+        for(int i = 0;i<100; i++)
+        {
+            if(token[i] == null)
+            {
+                break;
+            }
+            size++;
+        }
+
+        for (int i = 1; i < size ; i++) {
+            description = description.concat(token[i] + " ");
+        }
+        try {
+            tasks.task_list.add(new Todo(description , "T"));
+            TaskList.newTask(tasks.task_list.get(tasks.size));
+        }
+        //Exception for Level-5
+        catch (DukeException | IOException ex) {
+            System.err.print(ex);
+        }
+        Task omg = tasks.task_list.get(tasks.size);
+        Duke.dukePrint("\t  Got it. I've added this task: \n" +
+                "\t" + omg.toString() + "\n" +
+                " \t Now you have " + ++tasks.size + " tasks in the list \n");
+    }
+
+    void findTasks(TaskList tasks, String[] token)
+    {
+        System.out.println(line + " Here are the matching tasks in your list: \n");
+        int matches = 0;
+        token[1] = token[1]+ " ";
+        for (int i = 0; i < tasks.size; i++) {
+            if(tasks.task_list.get(i).description.contains(token[1]))
+            {
+                System.out.println("\t"+ matches+"."+ tasks.task_list.get(i).toString());
+                matches++;
+            }
+        }
+        System.out.println(line);
+    }
+
+    void newDeadline_Event( TaskList tasks, String[] token, String type) throws ParseException {
+        String description = "";
+        String by_at = "";
+        boolean flag = true;
+        int size = 0;
+        String type1 = type.equals("/by")?"D":"E";
+
+        for(int i = 0; i<100; i++) {
+            if (token[i] == null) {
+                break;
+            }
+            size++;
+        }
+
+        for (int i = 1; i < size ; i++) {
+            if (token[i].equals(type)) {
+                flag = false;
+                continue;
+            }
+            if (flag) {
+                description = description.concat(token[i] + " ");
+            } else {
+                by_at = by_at.concat(token[i] + " ");
+            }
+        }
+        // changing the by if it is a date
+
+        by_at = Parser.detectDate(by_at);
+
+        try {
+            if(type1.equals("D")) {
+                tasks.task_list.add(new Deadline(description, by_at, type1));
+                tasks.task_list.get(tasks.size).by = by_at;
+            }
+            else
+            {
+                tasks.task_list.add(new Event(description, by_at, type1));
+                tasks.task_list.get(tasks.size).at = by_at;
+            }
+            TaskList.newTask(tasks.task_list.get(tasks.size));
+
+        } catch (DukeException | IOException ex) {
+            //Exception for Level-5
+
+            System.err.print(ex);
+        }
+        //Printing out the new Deadline
+        Task omg = tasks.task_list.get(tasks.size);
+        Duke.dukePrint("\t  Got it. I've added this task: \n" +
+                "\t" + omg.toString() + "\n" +
+                " \t Now you have " + ++tasks.size + " tasks in the list \n");
+    }
+
+}
