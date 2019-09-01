@@ -113,6 +113,8 @@ public class Duke {
 
                 try {
                     tasks.add(new Deadline(description, by, "D"));
+                    newTask(tasks.get(tasks.size()-1));
+
                 } catch (DukeException ex) {
                     //Exception for Level-5
 
@@ -133,6 +135,7 @@ public class Duke {
                 }
                 try {
                     tasks.add(new Todo(description, "T"));
+                    newTask(tasks.get(tasks.size()-1));
                 }
                 //Exception for Level-5
                 catch (DukeException ex) {
@@ -164,6 +167,7 @@ public class Duke {
                 try {
                     //New Event
                     tasks.add(new Event(description, at, "E"));
+                    newTask(tasks.get(tasks.size()-1));
                 }
                 //Exception for Level-5
                 catch (DukeException ex) {
@@ -305,22 +309,21 @@ public class Duke {
         }
     }
 
+    public static void newTask(Task task) throws IOException {
+        FileWriter fileWriter = new FileWriter("C:\\Users\\thesu\\DukeCS2113\\duke\\src\\data\\duke.txt", true);
+        PrintWriter printWriter = new PrintWriter(fileWriter);
+
+        printWriter.println(task.type+"|" + task.isDone + "|" + task.description + "|" + task.at);
+
+        printWriter.close();
+        fileWriter.close();
+    }
+
     public static void exitFile() {
 
         // Update the .txt file at the end of the session
 
         try {
-
-            FileWriter fileWriter = new FileWriter("C:\\Users\\thesu\\DukeCS2113\\duke\\src\\data\\duke.txt", true);
-            PrintWriter printWriter = new PrintWriter(fileWriter);
-
-            for (Task task : tasks) {
-                    printWriter.println(task.type+"|" + task.isDone + "|" + task.description + "|" + task.at);
-            }
-
-            printWriter.close();
-            fileWriter.close();
-
             FileReader fileReader1 = new FileReader("C:\\Users\\thesu\\DukeCS2113\\duke\\src\\data\\duke.txt");
             BufferedReader bufferedReader1 = new BufferedReader(fileReader1);
             StringBuilder inputBuffer = new StringBuilder();
