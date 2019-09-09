@@ -3,7 +3,8 @@ public class Deadline extends Task {
     protected String by;
 
     /**
-     * Constructor which is called when a new Deadline object is instantiated. Also throws an error
+     * Constructor which is called when a new Deadline object is instantiated. Also throws an error if either
+     * description or the date and time are empty
      *
      * @param description string containing the task description
      * @param by String variable indicating by when the task should be completed
@@ -31,7 +32,7 @@ public class Deadline extends Task {
     }
 
     /**
-     * Returns the string containing the task type, description and the date and time. This is returned to the UI class
+     * Returns the string containing the task type, description and the date. This is returned to the UI class
      * when printing the list.
      *
      * @return string in the specific format
