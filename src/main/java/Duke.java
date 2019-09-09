@@ -1,6 +1,4 @@
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class Duke {
     public static String line = "    ____________________________________________________________\n";
