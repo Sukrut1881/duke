@@ -8,6 +8,12 @@ public class Duke {
     private Ui ui;
     private Parser parser;
 
+    /**
+     * Constructor to begin the duke bot by taking data from the specified file path.
+     *
+     * @param filePath file path of the .txt file with the previous sessions
+     */
+
     private Duke(String filePath)
     {
         ui = new Ui();
@@ -23,6 +29,12 @@ public class Duke {
             tasks = new TaskList();
         }
     }
+
+    /**
+     * Runs the duke program. The main method which contains a while loop to keep accepting user inputs to alter their
+     * list
+     *
+     */
 
     public void run() throws ParseException {
 
@@ -83,9 +95,21 @@ public class Duke {
         dukePrint("     Bye. Hope to see you again soon!\n");
     }
 
+    /**
+     * Main function. Starting point of the program. Instantiates the duke object and specifies the filepath
+     *
+     */
+
     public static void main(String[] args) throws ParseException {
         new Duke("C:\\Users\\thesu\\DukeCS2113\\duke\\src\\data\\duke.txt").run();
     }
+
+    /**
+     * Takes any given message string and prints it to the user with the relevant duke formatting which includes the
+     * solid lines
+     *
+     * @param message TaskList containing all of the users task information
+     */
 
     public static void dukePrint(String message)
     {

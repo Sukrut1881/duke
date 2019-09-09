@@ -6,6 +6,13 @@ public class TaskList {
     ArrayList <Task> task_list;
     int size;
 
+    /**
+     * Constructor to initialise a TaskList object when a non empty arraylist is returned from the load function
+     *
+     * @param AL ArrayList of all the tasks loaded from the .txt file
+     * @throws DukeException exception thrown when the list is full
+     */
+
     TaskList(ArrayList<Task> AL) throws DukeException {
         if(AL.size() == 101)
         {
@@ -17,13 +24,25 @@ public class TaskList {
         size = AL.size();
     }
 
+    /**
+     * Constructor to initialise a TaskList object when an empty arraylist is returned from the load function
+     *
+     */
+
     TaskList() {
         task_list = new ArrayList<>();
+        size = 0;
     }
 
-    public static void deleteTask(String description, TaskList tasks) {
+    /**
+     * Deletes a task from the .txt file whenever the delete command is entered for a specific task
+     *
+     * @param description String containing the date of the Task
+     * @param tasks TaskList containing all of the users task information
+     *
+     */
 
-        // Update the .txt file when the thing is deleted
+    public static void deleteTask(String description, TaskList tasks) {
 
         try {
             FileReader fileReader1 = new FileReader("C:\\Users\\thesu\\DukeCS2113\\duke\\src\\data\\duke.txt");
@@ -56,6 +75,13 @@ public class TaskList {
             Duke.dukePrint(e.getMessage());
         }
     }
+
+    /**
+     * Adds a task to the .txt file whenever a new task is entered into the list
+     *
+     * @param task the task object which has been initialised
+     *
+     */
 
     public static void newTask(Task task) throws IOException {
         FileWriter fileWriter = new FileWriter("C:\\Users\\thesu\\DukeCS2113\\duke\\src\\data\\duke.txt", true);

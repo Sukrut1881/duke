@@ -5,10 +5,22 @@ public class Storage {
 
     protected String filepath;
 
+    /**
+     * Constructor to update the filepath variable
+     *
+     * @param Filepath
+     */
+
     public Storage(String Filepath)
     {
         filepath = Filepath;
     }
+
+    /**
+     * Writes the contents of the task list to the data file when the program terminates
+     *
+     * @param tasks object containing the task list
+     */
 
     public void exitFile(TaskList tasks) {
 
@@ -48,6 +60,12 @@ public class Storage {
             Duke.dukePrint(e.getMessage());
         }
     }
+
+    /**
+     * Reads the task list stored in the data file at the beginning of the program and updates the task list object
+     *
+     * @return object containing the task list
+     */
 
     public ArrayList<Task> load(int counter)
     {

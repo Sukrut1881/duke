@@ -11,19 +11,28 @@ public class Parser {
     private static  SimpleDateFormat formatter_rd = new SimpleDateFormat("dd 'rd' 'of' MMMMMMMMMMMM yyyy, h:mm a");
     private static  SimpleDateFormat formatter_th = new SimpleDateFormat("dd 'th' 'of' MMMMMMMMMMMM yyyy, h:mm a");
 
-    public Parser()
-    {
+    /**
+     * Creates a new Scanner object which takes in the next line of input
+     *
+     * @return String containing the next line input by the user
+     */
 
-    }
     public String inputString()
     {
         Scanner input = new Scanner(System.in);
         return input.nextLine();
     }
 
-    public String[] tokenize (String input1)
+    /**
+     * Takes in the input string to tokenize the string into individual words
+     *
+     * @param input the command entered by the user
+     * @return String[] array of the various tokens in the input string
+     */
+
+    public String[] tokenize (String input)
     {
-        StringTokenizer st = new StringTokenizer(input1);
+        StringTokenizer st = new StringTokenizer(input);
         int j = 0;
         String[] token = new String[100];
         while (st.hasMoreTokens()) {
@@ -32,6 +41,14 @@ public class Parser {
         }
         return token;
     }
+
+    /**
+     * Validates if the entered Task end-time is a date and converts the date into the Duke specific format
+     *
+     * @param day String containing the date of the Task
+     * @return String of the date converted according to the relevant
+     * @throws ParseException exception thrown when the input format of the date is incorrect
+     */
 
     static String detectDate(String day) throws ParseException {
 

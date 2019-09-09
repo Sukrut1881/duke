@@ -5,6 +5,13 @@ public class Ui {
 
     public static String line = "    ____________________________________________________________\n";
 
+    /**
+     * Constructor to print the welcome message of duke when it is initialised. This is printed using the dukePrint
+     * method in the Duke class.
+     *
+     */
+
+
     public Ui(){
         String logo = " ____        _        \n"
                 + "|  _ \\ _   _| | _____ \n"
@@ -19,12 +26,23 @@ public class Ui {
                 "     What can I do for you?\n" );
     }
 
+    /**
+     * Method containing error message when data fails to load from the duke.txt file.
+     *
+     */
+
     void showLoadingError()
     {
         System.out.println("\n    ____________________________________________________________\n" +
                 "     ☹ OOPS!!! There was an error loading your list.\n" +
                 "    ____________________________________________________________\n");
     }
+
+    /**
+     *  Prints the current list of tasks the user has stored
+     *
+     * @param tasks TaskList containing all of the users task information
+     */
 
     void showList(TaskList tasks)
     {
@@ -38,6 +56,13 @@ public class Ui {
 
     }
 
+    /**
+     * Method to mark a task in the list as done and print the respective message
+     *
+     * @param tasks TaskList containing all of the users task information
+     * @param token String array containing the tokenized input string
+     */
+
     void doneTask(TaskList tasks, String[] token)
     {
         int location = token[1].charAt(0) - '0' - 1;
@@ -45,6 +70,13 @@ public class Ui {
         Duke.dukePrint("     Nice! I've marked this task as done: \n" +
                 "\t" + tasks.task_list.get(location).toString() + "\n");
     }
+
+    /**
+     * Deletes a task in the list and updates the size of the task list.
+     *
+     * @param tasks TaskList containing all of the users task information
+     * @param location integer corresponding to the index of the task to be deleted
+     */
 
     void deleteTask(TaskList tasks, int location)
     {
@@ -54,6 +86,14 @@ public class Ui {
         TaskList.deleteTask(tasks.task_list.get(location).description, tasks);
         tasks.task_list.remove(location);
     }
+
+    /**
+     * Adds a new task with the type Todo
+     * into the users task list
+     *
+     * @param tasks TaskList containing all of the users task information
+     * @param token String array containing the tokenized input string
+     */
 
     void newTodo (TaskList tasks, String[] token)
     {
@@ -74,6 +114,7 @@ public class Ui {
         for (int i = 1; i < size ; i++) {
             description = description.concat(token[i] + " ");
         }
+
         try {
             tasks.task_list.add(new Todo(description , "T"));
             TaskList.newTask(tasks.task_list.get(tasks.size));
@@ -82,11 +123,19 @@ public class Ui {
         catch (DukeException | IOException ex) {
             System.err.print(ex);
         }
-        Task omg = tasks.task_list.get(tasks.size);
+
+        Task newTask = tasks.task_list.get(tasks.size);
         Duke.dukePrint("\t  Got it. I've added this task: \n" +
-                "\t" + omg.toString() + "\n" +
+                "\t" + newTask.toString() + "\n" +
                 " \t Now you have " + ++tasks.size + " tasks in the list \n");
     }
+
+    /**
+     * Finds multiple tasks in the list which contain and match a specific keyword
+     *
+     * @param tasks TaskList containing all of the users task information
+     * @param token String array containing the tokenized input string
+     */
 
     void findTasks(TaskList tasks, String[] token)
     {
@@ -102,6 +151,16 @@ public class Ui {
         }
         System.out.println(line);
     }
+
+    /**
+     * Adds a new task with the type Deadline or Event
+     * into the users task list
+     *
+     * @param tasks TaskList containing all of the users task information
+     * @param token String array containing the tokenized input string
+     * @param type String to specify which task type object to instantiate
+     * @throws ParseException exception thrown when the input format of the date is incorrect
+     */
 
     void newDeadline_Event( TaskList tasks, String[] token, String type) throws ParseException {
         String description = "";
